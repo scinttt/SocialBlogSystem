@@ -7,34 +7,33 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
-
 /**
- * 
+ *
  * @TableName thumb
  */
 @TableName(value ="thumb")
 @Data
 public class Thumb implements Serializable {
     /**
-     * 
+     *
      */
     @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
-     * 
+     *
      */
-    private Long userid;
+    private Long userId;
 
     /**
-     * 
+     *
      */
-    private Long blogid;
+    private Long blogId;
 
     /**
-     * 
+     *
      */
-    private Date createtime;
+    private Date createTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

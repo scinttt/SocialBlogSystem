@@ -6,9 +6,9 @@
 
     <resultMap id="BaseResultMap" type="com.creaturelove.sociallikebackend.model.entity.Thumb">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="userid" column="userId" jdbcType="BIGINT"/>
-            <result property="blogid" column="blogId" jdbcType="BIGINT"/>
-            <result property="createtime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="userId" column="userId" jdbcType="BIGINT"/>
+            <result property="blogId" column="blogId" jdbcType="BIGINT"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">

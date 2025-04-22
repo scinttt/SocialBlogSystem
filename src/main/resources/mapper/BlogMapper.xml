@@ -6,13 +6,13 @@
 
     <resultMap id="BaseResultMap" type="com.creaturelove.sociallikebackend.model.entity.Blog">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="userid" column="userId" jdbcType="BIGINT"/>
+            <result property="userId" column="userId" jdbcType="BIGINT"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
-            <result property="coverimg" column="coverImg" jdbcType="VARCHAR"/>
+            <result property="coverImg" column="coverImg" jdbcType="VARCHAR"/>
             <result property="content" column="content" jdbcType="VARCHAR"/>
-            <result property="thumbcount" column="thumbCount" jdbcType="INTEGER"/>
-            <result property="createtime" column="createTime" jdbcType="TIMESTAMP"/>
-            <result property="updatetime" column="updateTime" jdbcType="TIMESTAMP"/>
+            <result property="thumbCount" column="thumbCount" jdbcType="INTEGER"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
