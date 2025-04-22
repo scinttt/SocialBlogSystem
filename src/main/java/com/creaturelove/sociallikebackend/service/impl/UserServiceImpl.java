@@ -1,9 +1,11 @@
 package com.creaturelove.sociallikebackend.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.creaturelove.sociallikebackend.constant.UserConstant;
 import com.creaturelove.sociallikebackend.model.entity.User;
 import com.creaturelove.sociallikebackend.service.UserService;
 import com.creaturelove.sociallikebackend.mapper.UserMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +17,10 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     implements UserService{
 
+    @Override
+    public User getLoginUser(HttpServletRequest request) {
+        return (User) request.getSession().getAttribute(UserConstant.LOGIN_USER);
+    }
 }
 
 

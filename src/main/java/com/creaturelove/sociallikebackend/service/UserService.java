@@ -2,6 +2,7 @@ package com.creaturelove.sociallikebackend.service;
 
 import com.creaturelove.sociallikebackend.model.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
 * @author zhangrenren
@@ -10,4 +11,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface UserService extends IService<User> {
 
+    User getLoginUser(HttpServletRequest request);
 }
