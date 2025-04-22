@@ -1,0 +1,19 @@
+services:
+  #(customize the service name in the network)
+  mysql:
+    image: mysql:8.0
+    #(Customize the display name)
+    container_name: mysql_container
+    environment:
+      MYSQL_DATABASE: thumb_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpassword
+    #(host:container)
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

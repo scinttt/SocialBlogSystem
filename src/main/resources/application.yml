@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: SocialLikeBackend
+  mvc:
+    servlet:
+      path: /api
+knife4j:
+  enable: true
+  setting:
+    language: en
