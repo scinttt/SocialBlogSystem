@@ -3,8 +3,8 @@ package com.creaturelove.sociallikebackend.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.creaturelove.sociallikebackend.constant.ThumbConstant;
 import com.creaturelove.sociallikebackend.model.entity.Blog;
-import com.creaturelove.sociallikebackend.model.entity.Thumb;
 import com.creaturelove.sociallikebackend.model.entity.User;
 import com.creaturelove.sociallikebackend.model.vo.BlogVO;
 import com.creaturelove.sociallikebackend.service.BlogService;
@@ -13,12 +13,12 @@ import com.creaturelove.sociallikebackend.service.ThumbService;
 import com.creaturelove.sociallikebackend.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -32,9 +32,12 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog>
 
     private final ThumbService thumbService;
 
-    BlogServiceImpl(UserService userService, @Lazy ThumbService thumbService) {
+    private final RedisTemplate<String, Object> redisTemplate;
+
+    BlogServiceImpl(UserService userService, @Lazy ThumbService thumbService, RedisTemplate<String, Object> redisTemplate) {
         this.userService = userService;
         this.thumbService = thumbService;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
@@ -69,19 +72,20 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog>
         Map<Long, Boolean> blogIdHasThumbMap = new HashMap<>();
 
         if(ObjUtil.isNotEmpty(loginUser)) {
-            // get blogIdSet
-            Set<Long> blogIdSet = blogList.stream()
-                    .map(Blog::getId)
-                    .collect(Collectors.toSet());
+            List<Object> blogIdList = blogList.stream()
+                    .map(blog -> blog.getId().toString())
+                    .collect(Collectors.toList());
 
-            // get thumb List
-            List<Thumb> thumbList = thumbService.lambdaQuery()
-                    .eq(Thumb::getUserId, loginUser.getId())
-                    .in(Thumb::getBlogId, blogIdSet)
-                    .list();
+            // get thumb
+            List<Object> thumbList = redisTemplate.opsForHash()
+                    .multiGet(ThumbConstant.USER_THUMB_KEY_PREFIX + loginUser.getId(), blogIdList);
 
             // iterate thumbList and put blogIdHasThumbMap
-            thumbList.forEach(blogThumb -> blogIdHasThumbMap.put(blogThumb.getBlogId(), true));
+            for(int i=0; i<thumbList.size(); i++){
+                if(thumbList.get(i) != null){
+                    blogIdHasThumbMap.put(Long.valueOf(blogIdList.get(i).toString()), true);
+                }
+            }
         }
         // convert original blogList to blogVOList
         return blogList.stream()

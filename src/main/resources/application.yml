@@ -6,6 +6,13 @@ spring:
     url: jdbc:mysql://localhost:3306/thumb_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: user
     password: password
+  data:
+    redis:
+      database: 0
+      host: localhost
+      password: password
+      timeout: 5000
+      port: 6379
 knife4j:
   enable: true
   setting:

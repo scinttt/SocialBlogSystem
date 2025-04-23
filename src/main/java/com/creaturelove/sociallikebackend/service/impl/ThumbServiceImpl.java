@@ -49,6 +49,7 @@ public class ThumbServiceImpl extends ServiceImpl<ThumbMapper, Thumb>
             return transactionTemplate.execute(status -> {
                 // get blogId
                 Long blogId = doThumbRequest.getBlogId();
+
                 // check if the blog exists from redis cache
                 boolean exists = this.hasThumb(blogId, loginUser.getId());
                 if(exists){
@@ -111,6 +112,7 @@ public class ThumbServiceImpl extends ServiceImpl<ThumbMapper, Thumb>
 
             boolean success = update && this.removeById(thumbId);
 
+            // update cache after update successfully update database
             if(success) {
                 redisTemplate.opsForHash().delete(ThumbConstant.USER_THUMB_KEY_PREFIX + loginUser.getId(), blogId.toString());
             }
