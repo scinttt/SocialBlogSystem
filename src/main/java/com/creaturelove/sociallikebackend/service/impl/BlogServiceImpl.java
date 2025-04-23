@@ -12,6 +12,7 @@ import com.creaturelove.sociallikebackend.mapper.BlogMapper;
 import com.creaturelove.sociallikebackend.service.ThumbService;
 import com.creaturelove.sociallikebackend.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
