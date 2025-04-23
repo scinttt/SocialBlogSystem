@@ -53,14 +53,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog>
             return blogVO;
         }
 
-        // find the thumb record by loginU
-        // serId and blogId
-        Thumb thumb = thumbService.lambdaQuery()
-                .eq(Thumb::getUserId, loginUser.getId())
-                .eq(Thumb::getBlogId, blog.getId())
-                .one();
+        Boolean exist = thumbService.hasThumb(blog.getId(), loginUser.getId());
 
-        blogVO.setHasThumb(thumb != null);
+        blogVO.setHasThumb(exist);
 
         return blogVO;
     }
