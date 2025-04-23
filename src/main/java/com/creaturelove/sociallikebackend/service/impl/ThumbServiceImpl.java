@@ -17,8 +17,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 /**
 * @author zhangrenren
-* @description 针对表【thumb】的数据库操作Service实现
-* @createDate 2025-04-21 22:33:02
 */
 @Service
 @Slf4j
@@ -73,6 +71,34 @@ public class ThumbServiceImpl extends ServiceImpl<ThumbMapper, Thumb>
         }
     }
 
+    @Override
+    public Boolean undoThumb(DoThumbRequest doThumbRequest, HttpServletRequest request) {
+        if (doThumbRequest == null || doThumbRequest.getBlogId() == null) {
+            throw new RuntimeException("Request parameters wrong");
+        }
+
+        // get login user
+        User loginUser = userService.getLoginUser(request);
+
+        // lock the login user
+        synchronized (loginUser.getId().toString().intern()) {
+            Long blogId = doThumbRequest.getBlogId();
+            Thumb thumb = this.lambdaQuery()
+                    .eq(Thumb::getUserId, loginUser.getId())
+                    .eq(Thumb::getBlogId, blogId)
+                    .one();
+            if (thumb == null) {
+                throw new RuntimeException("You have not liked this blog");
+            }
+
+            boolean update = blogService.lambdaUpdate()
+                    .eq(Blog::getId, blogId)
+                    .setSql("thumbCount = thumbCount - 1")
+                    .update();
+
+            return update && this.removeById(thumb.getId());
+        }
+    }
 }
 
 

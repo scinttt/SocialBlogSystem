@@ -12,7 +12,6 @@ import com.creaturelove.sociallikebackend.mapper.BlogMapper;
 import com.creaturelove.sociallikebackend.service.ThumbService;
 import com.creaturelove.sociallikebackend.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -24,16 +23,14 @@ import java.util.stream.Collectors;
 
 /**
 * @author zhangrenren
-* @description 针对表【blog】的数据库操作Service实现
-* @createDate 2025-04-21 22:33:02
 */
 @Service
 public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog>
     implements BlogService{
 
-    private UserService userService;
+    private final UserService userService;
 
-    private ThumbService thumbService;
+    private final ThumbService thumbService;
 
     BlogServiceImpl(UserService userService, @Lazy ThumbService thumbService) {
         this.userService = userService;
