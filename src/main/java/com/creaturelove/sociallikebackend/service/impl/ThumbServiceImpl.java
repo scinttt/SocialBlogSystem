@@ -20,7 +20,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 /**
 * @author zhangrenren
 */
-@Service("thumbServiceDB")
+@Service
 @Slf4j
 @RequiredArgsConstructor
 public class ThumbServiceImpl extends ServiceImpl<ThumbMapper, Thumb>

@@ -4,7 +4,6 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.creaturelove.sociallikebackend.constant.RedisLuaScriptConstant;
-import com.creaturelove.sociallikebackend.constant.ThumbConstant;
 import com.creaturelove.sociallikebackend.mapper.ThumbMapper;
 import com.creaturelove.sociallikebackend.model.dto.DoThumbRequest;
 import com.creaturelove.sociallikebackend.model.entity.Thumb;
@@ -16,6 +15,7 @@ import com.creaturelove.sociallikebackend.util.RedisKeyUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +25,7 @@ import java.util.Arrays;
 * @author zhangrenren
 */
 @Service
+@Primary
 @Slf4j
 @RequiredArgsConstructor
 public class ThumbServiceRedisImpl extends ServiceImpl<ThumbMapper, Thumb>
@@ -103,7 +104,7 @@ public class ThumbServiceRedisImpl extends ServiceImpl<ThumbMapper, Thumb>
     public Boolean hasThumb(Long blogId, Long userId) {
         return redisTemplate
                 .opsForHash()
-                .hasKey(ThumbConstant.USER_THUMB_KEY_PREFIX + userId, blogId.toString());
+                .hasKey(RedisKeyUtil.getUserThumbKey(userId), blogId.toString());
     }
 
     private String getTimeSlice(){
