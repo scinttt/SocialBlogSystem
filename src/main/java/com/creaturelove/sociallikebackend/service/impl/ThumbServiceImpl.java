@@ -24,7 +24,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 */
 @Service
 @Slf4j
-@Primary
 @RequiredArgsConstructor
 public class ThumbServiceImpl extends ServiceImpl<ThumbMapper, Thumb>
     implements ThumbService {
