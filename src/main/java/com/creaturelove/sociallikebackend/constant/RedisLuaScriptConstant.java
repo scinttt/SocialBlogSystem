@@ -64,5 +64,47 @@ public class RedisLuaScriptConstant {
             
             return 1 -- success
             """, Long.class);
+    /**
+     * thumb Lua script
+     * KEYS[1]       -- thumb state key
+     * ARGV[1]       -- blog ID
+     * 返回:
+     * -1: user already thumbed
+     * 1: success
+     */
+    public static final RedisScript<Long> THUMB_SCRIPT_MQ = new DefaultRedisScript<>("""
+                     local userThumbKey = KEYS[1]
+                     local blogId = ARGV[1]
+             
+                     -- check thumbed
+                     if redis.call("HEXISTS", userThumbKey, blogId) == 1 then
+                         return -1
+                     end
+             
+                     -- add thumb record
+                     redis.call("HSET", userThumbKey, blogId, 1)
+                     return 1
+             """, Long.class);
 
+    /**
+     * undoThumb Lua Script
+     * KEYS[1]
+     * ARGV[1]
+     * 返回:
+     * -1: User Already thumbed
+     * 1: Success
+     */
+    public static final RedisScript<Long> UNTHUMB_SCRIPT_MQ = new DefaultRedisScript<>("""
+             local userThumbKey = KEYS[1]
+             local blogId = ARGV[1]
+             
+             -- check already thumbed
+             if redis.call("HEXISTS", userThumbKey, blogId) == 0 then
+                 return -1
+             end
+             
+             -- delete thumb record
+             redis.call("HDEL", userThumbKey, blogId)
+             return 1
+             """, Long.class);
 }
