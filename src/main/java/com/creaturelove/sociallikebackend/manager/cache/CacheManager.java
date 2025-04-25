@@ -86,7 +86,7 @@ public class CacheManager {
         // build the unique cache key
         String compositeKey = buildCacheKey(hash, key);
 
-        // 1. search local cache
+        // search local cache
         Object object = localCache.getIfPresent(compositeKey);
         if (object == null) {
             return;

@@ -25,7 +25,6 @@ import java.util.Arrays;
 * @author zhangrenren
 */
 @Service
-@Primary
 @Slf4j
 @RequiredArgsConstructor
 public class ThumbServiceRedisImpl extends ServiceImpl<ThumbMapper, Thumb>
