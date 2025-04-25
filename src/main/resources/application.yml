@@ -22,3 +22,5 @@ mybatis-plus:
     map-underscore-to-camel-case: false
     log-impl:
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+server:
+  port: 9199

@@ -1,7 +1,6 @@
 package com.creaturelove.sociallikebackend.manager.cache;
 
 import cn.hutool.core.util.HashUtil;
-import org.springframework.data.redis.core.convert.Bucket;
 
 import java.util.*;
 import java.util.concurrent.BlockingQueue;

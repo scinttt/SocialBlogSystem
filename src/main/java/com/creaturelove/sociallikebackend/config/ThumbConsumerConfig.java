@@ -24,6 +24,19 @@ public class ThumbConsumerConfig <T> implements PulsarListenerConsumerBuilderCus
         );
     }
 
+    // Configure NACK Retry Policy
+    @Bean
+    public RedeliveryBackoff negativeAckRedeliveryBackoff() {
+        return MultiplierRedeliveryBackoff.builder()
+                // 初始延迟 1 秒
+                .minDelayMs(1000)
+                // 最大延迟 60 秒
+                .maxDelayMs(60000)
+                // 每次重试延迟倍数
+                .multiplier(2)
+                .build();
+    }
+
     // Configure ACK TimeOut Retry Policy
     @Bean
     public RedeliveryBackoff ackTimeoutRedeliveryBackoff() {

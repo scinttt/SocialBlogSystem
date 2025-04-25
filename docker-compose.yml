@@ -25,6 +25,13 @@ services:
       REDIS_PASSWORD: password
     command: [ "redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}" ]
     restart: unless-stopped
+  pulsar:
+    image: apachepulsar/pulsar:4.0.3
+    container_name: pulsar
+    ports:
+      - "6650:6650"
+      - "8080:8080"
+    command: bin/pulsar standalone
 
 volumes:
   mysql_data:
