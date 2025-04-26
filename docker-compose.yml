@@ -33,6 +33,55 @@ services:
       - "8080:8080"
     command: bin/pulsar standalone
 
+  pd:
+    image: pingcap/pd:v7.5.0
+    container_name: tidb-pd
+    ports:
+      - "2379:2379"    # PD client
+      - "2380:2380"    # PD peer
+    command:
+      # 这里直接写 flag，entrypoint 已经是 pd-server
+      - --name=pd
+      - --data-dir=/var/lib/pd
+      - --client-urls=http://0.0.0.0:2379
+      - --advertise-client-urls=http://pd:2379
+      - --peer-urls=http://0.0.0.0:2380
+      - --advertise-peer-urls=http://pd:2380
+      - --initial-cluster=pd=http://pd:2380
+      - --force-new-cluster
+
+
+  tikv:
+    image: pingcap/tikv:v7.5.0
+    container_name: tidb-tikv
+    depends_on:
+      - pd
+    ports:
+      - "20160:20160"
+    command:
+      # 这三行都要加上
+      - tikv-server
+      - --pd=pd:2379
+      - --addr=0.0.0.0:20160                 # 监听所有网卡
+      - --advertise-addr=tikv:20160         # 对外通告的地址，必须是 Compose 网络名
+    volumes:
+      - tikv_data:/var/lib/tikv
+
+
+  tidb:
+    image: pingcap/tidb:v7.5.0
+    container_name: tidb-server
+    depends_on:
+      - pd
+      - tikv
+    ports:
+      - "4000:4000"
+      - "10080:10080"
+    command:
+      - --store=tikv
+      - --path=pd:2379
 volumes:
   mysql_data:
   redis_data:
+  pd_data:
+  tikv_data:
