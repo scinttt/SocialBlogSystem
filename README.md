@@ -1,4 +1,4 @@
-<h1 align="center">📚 Thumb API & Blog Platform</h1>
+<h1 align="center">📚 Social Blog Platform</h1>
 <p align="center">
   Modern <b>Java</b> like-system demo – from CRUD to high-concurrency & observability  
   Spring Boot 3.4 • MyBatis-Plus • TiDB • Redis • Pulsar • Docker Compose • Grafana
